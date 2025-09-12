@@ -1,0 +1,26 @@
+queues:
+  q64:
+  # First parallel environment in each queue is available as default.
+  - x64
+  q32-large:
+  - x32
+  - smp
+  q32-small:
+  - x32
+  - smp
+  q56:
+  - x56
+  - smp
+  hydra.q:
+  - x64
+  - fillup
+  - smp
+  - x40
+directories:
+  espresso: /usr/local/q-e/bin
+  espresso_sr: /home/shitade/espresso/nc-sr-05_pbe_standard
+  espresso_fr: /home/shitade/espresso/nc-fr-04_pbe_standard
+  vasp: /usr/local/vasp.6.5.0/vasp.6.5.0/bin
+  vasp_pseudo: /home/shitade/vasp/POT_GGA_PAW_PBE
+  vasp_vdw: /usr/local/vasp.6.5.0/vdw_kernel.bindat
+  wannier90: /home/shitade/wannier90
