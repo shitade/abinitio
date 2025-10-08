@@ -434,7 +434,7 @@ class PhysicalQuantity:
             else:
                 if not (physicalquantity.key == key and np.array_equal(physicalquantity.fermi_energies, fermi_energies)):
                     return None
-        weighted_values = [physicalquantities[component.to_tuple].values * weight
+        weighted_values = [physicalquantities[component].values * weight
                            for (component, weight) in weights.items()]
         averages = np.average(a = weighted_values, axis = 0)
         errors = np.amax(a = np.abs(weighted_values - averages), axis = 0)
@@ -484,49 +484,34 @@ class PhysicalPlotter(np.ndarray):
             ylabels (dict[Component, str]): Ylabel of each Axes object. Defaults to None.
             ylims (dict[Component, list[float], optional): Ylim of each Axes object. Length is 2. Defaults to None.
         '''
-        # Translate any key of xlims to Component object if str.
-        if xlims is not None:
-            for (key, value) in xlims.items():
-                if isinstance(key, str):
-                    xlims[Component(component = key)] = value
-        # Translate any key of ylabels to Component object if str.
-        if ylabels is not None:
-            for (key, value) in ylabels.items():
-                if isinstance(key, str):
-                    ylabels[Component(component = key)] = value
-        # Translate any key of xlims to Component object if str.
-        if ylims is not None:
-            for (key, value) in ylims.items():
-                if isinstance(key, str):
-                    ylims[Component(component = key)] = value
         for row in range(self.shape[0]):
             for col in range(self.shape[1]):
-                component = Component.from_tuple(row, col)
-                for (physicalquantity, linestyle) in zip(self[component.to_tuple], LINESTYLES):
+                component = Component(row, col)
+                for (physicalquantity, linestyle) in zip(self[component], LINESTYLES):
                     if physicalquantity.errors is None:
-                        axs[component.to_tuple].plot(physicalquantity.fermi_energies, physicalquantity.values,
+                        axs[component].plot(physicalquantity.fermi_energies, physicalquantity.values,
                                                      label = physicalquantity.label, **linestyle)
                     else:
-                        axs[component.to_tuple].errorbar(x = physicalquantity.fermi_energies, y = physicalquantity.values,
+                        axs[component].errorbar(x = physicalquantity.fermi_energies, y = physicalquantity.values,
                                                          yerr = physicalquantity.errors, label = physicalquantity.label, **linestyle)
-                axs[component.to_tuple].axhline(**GRID)
-                axs[component.to_tuple].axvline(**GRID)
-                axs[component.to_tuple].set_xlabel(xlabel = r'$E_{\mathrm{F}}$ [eV]')
+                axs[component].axhline(**GRID)
+                axs[component].axvline(**GRID)
+                axs[component].set_xlabel(xlabel = r'$E_{\mathrm{F}}$ [eV]')
                 # If xlims is specified.
                 if xlims is not None and component in xlims.keys():
-                    axs[component.to_tuple].set_xlim(xlims[component])
+                    axs[component].set_xlim(xlims[component])
                 # If ylabels is specified.
                 if ylabels is not None and component in ylabels.keys():
-                    axs[component.to_tuple].set_ylabel(ylabel = ylabels[component])
+                    axs[component].set_ylabel(ylabel = ylabels[component])
                 else:
-                    keys = set(physicalquantity.key for physicalquantity in self[component.to_tuple])
-                    ylabel = self[*component.to_tuple, 0].ylabel if len(keys) == 1 else None
-                    axs[component.to_tuple].set_ylabel(ylabel = ylabel)
+                    keys = set(physicalquantity.key for physicalquantity in self[component])
+                    ylabel = self[*component, 0].ylabel if len(keys) == 1 else None
+                    axs[component].set_ylabel(ylabel = ylabel)
                 # If ylims is specified.
                 if ylims is not None and component in ylims.keys():
-                    axs[component.to_tuple].set_ylim(ylims[component])
+                    axs[component].set_ylim(ylims[component])
                 # Set legend only for multiple lines.
-                axs[component.to_tuple].legend()
+                axs[component].legend()
     def save_plot(self,
                   filename: Path,
                   xlims: dict[Component, list[float]] = None,
