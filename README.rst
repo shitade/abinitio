@@ -25,8 +25,7 @@ How to use
 
 #. Execute automatic/runvasp(espresso).py.
 
-#. You can generate a tex file for response coefficients allowed by (magnetic) point group symmetry
-using symmetry(magnetic).py.
+#. You can generate a tex file for response coefficients allowed by (magnetic) point group symmetry using symmetry(magnetic).py.
 
 Author
 ++++++
