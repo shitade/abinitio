@@ -238,6 +238,7 @@ class PointGroup:
 
     Args:
         hermann_mauguin (str): Hermann-Mauguin symbol.
+        rotations (list[str], optional): Seitz symbols of rotation matrices if not default hermann_mauguin. Defaults to None.
 
     Attributes:
         latex (str): LaTeX document without pre/postamble.
@@ -299,10 +300,14 @@ class PointGroup:
         'm-3m': ['1', '2_{001}', '2_{010}', '2_{100}', '3^{+}_{111}', '3^{+}_{-11-1}', '3^{+}_{1-1-1}', '3^{+}_{-1-11}', '3^{-}_{111}', '3^{-}_{1-1-1}', '3^{-}_{-1-11}', '3^{-}_{-11-1}', '2_{110}', '2_{1-10}', '4^{-}_{001}', '4^{+}_{001}', '4^{-}_{100}', '2_{011}', '2_{01-1}', '4^{+}_{100}', '4^{+}_{010}', '2_{101}', '4^{-}_{010}', '2_{-101}',
                  '-1', 'm_{001}', 'm_{010}', 'm_{100}', '-3^{+}_{111}', '-3^{+}_{-11-1}', '-3^{+}_{1-1-1}', '-3^{+}_{-1-11}', '-3^{-}_{111}', '-3^{-}_{1-1-1}', '-3^{-}_{-1-11}', '-3^{-}_{-11-1}', 'm_{110}', 'm_{1-10}', '-4^{-}_{001}', '-4^{+}_{001}', '-4^{-}_{100}', 'm_{011}', 'm_{01-1}', '-4^{+}_{100}', '-4^{+}_{010}', 'm_{101}', '-4^{-}_{010}', 'm_{-101}']
     }
-    HEXAGONALS = ['3', '-3', '32', '3m', '-3m', '6', '-6', '6/m', '622', '6mm', '-6m2', '6/mmm']
     def __init__(self,
-                 hermann_mauguin: str):
+                 hermann_mauguin: str,
+                 rotations: list[str] = None):
         self.hermann_mauguin = hermann_mauguin
+        if self.hermann_mauguin in self.ROTATIONS.keys():
+            self.rotations = self.ROTATIONS[self.hermann_mauguin]
+        else:
+            self.rotations = rotations
     def __str__(self):
         lines = ['------------------------------',
                  f'{__class__.__name__}: {self.hermann_mauguin}',
@@ -348,7 +353,7 @@ class PointGroup:
         '''
         Centrosymmetric or not.
         '''
-        return '-1' in self.ROTATIONS[self.hermann_mauguin]
+        return '-1' in self.rotations
     @property
     def is_chiral(self)-> bool:
         '''
@@ -361,20 +366,20 @@ class PointGroup:
         '''
         Hexagonal or not.
         '''
-        return self.hermann_mauguin in self.HEXAGONALS
+        return '3^{+}_{001}' in self.rotations
     @property
     def order(self)-> int:
         '''
         Order, the number of symmetry operations.
         '''
-        return len(self.ROTATIONS[self.hermann_mauguin])
+        return len(self.rotations)
     @property
     def symmops(self)-> list[SymmOp]:
         '''
         Symmetry operations.
         '''
         return [SymmOp(is_hexagonal = self.is_hexagonal, seitz = seitz)
-                for seitz in self.ROTATIONS[self.hermann_mauguin]]
+                for seitz in self.rotations]
     @classmethod
     def from_structure(cls,
                        structure: Structure):

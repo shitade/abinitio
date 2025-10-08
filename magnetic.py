@@ -15,6 +15,7 @@ class MagneticPointGroup(symmetry.PointGroup):
 
     Args:
         hermann_mauguin (str): Hermann-Mauguin symbol.
+        rotations (list[str], optional): Seitz symbols of rotation matrices if not default hermann_mauguin. Defaults to None.
 
     Attributes:
         latex (str): LaTeX document without pre/postamble.
@@ -301,23 +302,14 @@ class MagneticPointGroup(symmetry.PointGroup):
         "m'-3'm'": ["1", "2_{001}", "2_{010}", "2_{100}", "3^{+}_{111}", "3^{+}_{-11-1}", "3^{+}_{1-1-1}", "3^{+}_{-1-11}", "3^{-}_{111}", "3^{-}_{1-1-1}", "3^{-}_{-1-11}", "3^{-}_{-11-1}", "2_{110}", "2_{1-10}", "4^{-}_{001}", "4^{+}_{001}", "4^{-}_{100}", "2_{011}", "2_{01-1}", "4^{+}_{100}", "4^{+}_{010}", "2_{101}", "4^{-}_{010}", "2_{-101}",
                     "-1'", "m_{001}'", "m_{010}'", "m_{100}'", "-3^{+}_{111}'", "-3^{+}_{-11-1}'", "-3^{+}_{1-1-1}'", "-3^{+}_{-1-11}'", "-3^{-}_{111}'", "-3^{-}_{1-1-1}'", "-3^{-}_{-1-11}'", "-3^{-}_{-11-1}'", "m_{110}'", "m_{1-10}'", "-4^{-}_{001}'", "-4^{+}_{001}'", "-4^{-}_{100}'", "m_{011}'", "m_{01-1}'", "-4^{+}_{100}'", "-4^{+}_{010}'", "m_{101}'", "-4^{-}_{010}'", "m_{-101}'"]
     }
-    HEXAGONALS = [
-        "3", "31'",
-        "-3", "-31'", "-3'",
-        "32", "321'", "32'",
-        "3m", "3m1'", "3m'",
-        "-3m", "-3m1'", "-3'm", "-3'm'", "-3m'",
-        "6", "61'", "6'",
-        "-6", "-61'", "-6'",
-        "6/m", "6/m1'", "6'/m", "6/m'", "6'/m'",
-        "622", "6221'", "6'22'", "62'2'",
-        "6mm", "6mm1'", "6'mm'", "6m'm'",
-        "-6m2", "-6m21'", "-6'm'2", "-6'm2'", "-6m'2'",
-        "6/mmm", "6/mmm1'", "6/m'mm", "6'/mmm'", "6'/m'mm'", "6/mm'm'", "6/m'm'm'"
-    ]
     def __init__(self,
-                 hermann_mauguin: str):
+                 hermann_mauguin: str,
+                 rotations: list[str] = None):
         self.hermann_mauguin = hermann_mauguin
+        if self.hermann_mauguin in self.ROTATIONS.keys():
+            self.rotations = self.ROTATIONS[self.hermann_mauguin]
+        else:
+            self.rotations = rotations
     def __str__(self):
         lines = ['------------------------------',
                  f'{__class__.__name__}: {self.hermann_mauguin}',
@@ -379,13 +371,13 @@ class MagneticPointGroup(symmetry.PointGroup):
         '''
         Time-reversal-symmetric or not.
         '''
-        return "1'" in self.ROTATIONS[self.hermann_mauguin]
+        return "1'" in self.rotations
     @property
     def is_pt_symmetric(self)-> bool:
         '''
         PT-symmetric or not.
         '''
-        return "-1'" in self.ROTATIONS[self.hermann_mauguin]
+        return "-1'" in self.rotations
     def check_closure(self)-> bool:
         '''
         Check if implemented point group is closed.
