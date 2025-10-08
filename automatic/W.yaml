@@ -1,0 +1,85 @@
+mater: W
+runscf:
+  soc: true
+  kmesh: 32
+  queue_name: q32-large
+  num_procs: 32
+runbands:
+  kmesh: 32
+  nbands: 64
+  queue_name: q32-large
+  num_procs: 32
+postbands:
+# Neglected in VASP; necessary in Quantum Espresso.
+  queue_name: q32-large
+  num_procs: 16
+  pe_name: smp
+savebands:
+  ylim:
+  - -10
+  - null
+runnscf:
+# atomic_orbitals and exclude_bands are for VASP; neglected in Quantum Espresso.
+  kmesh: 8
+  nbands: 64
+  atomic_orbitals:
+  - - s
+    - p
+    - d
+  exclude_bands:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  queue_name: q32-large
+  num_procs: 32
+prew90:
+# Neglected in VASP; necessary in Quantum Espresso.
+  atomic_orbitals:
+  - - s
+    - p
+    - d
+  exclude_bands:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  queue_name: q32-large
+  num_procs: 16
+  pe_name: smp
+pw2w90:
+# Neglected in VASP; necessary in Quantum Espresso.
+  queue_name: q32-large
+  num_procs: 16
+  pe_name: smp
+runw90:
+  bands_num_points: 32
+  num_iter: 0
+  dis_win_max: 38
+  dis_froz_max: 5
+  queue_name: q64
+  num_procs: 128
+postw90:
+  fermi_energy_range:
+  - -2
+  - 2
+  kmesh: 128
+  component:
+  - 2
+  - 0
+  - 1
+  queue_name: q64
+  num_procs: 128
+savew90:
+  ylims:
+    '00':
+    - -500
+    - 500

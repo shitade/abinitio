@@ -71,7 +71,7 @@ class ResponseCoefficient:
                                        for symbol in symbols])
             nonzero_components = list(zip(*np.nonzero(a = tensor)))
             if nonzero_components:
-                weight = {common.Component.from_tuple(*component): tensor[component]
+                weight = {common.Component(*component): tensor[component]
                           for component in nonzero_components}
                 weights.append(weight)
         return weights

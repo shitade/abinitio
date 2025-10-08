@@ -285,44 +285,42 @@ class BandPlotter:
         fig.savefig(fname = filename)
         print(f'## Saving {filename} finished. ##')
 
-class Component(str):
+class Component(tuple[int]):
     '''
-    Class of component.
+    Class of component of band and physical properties.
 
     Args:
-        component (str): For instance, '201' for (2, 0, 1).
+        *component (int): Component.
 
     Attributes:
-        to_xyz (str): For instance, 'zxy' for (2, 0, 1).
-        to_tuple (tuple[int]): For instance, (2, 0, 1).
+        to_xyz (str): For instance, xyz for (0, 1, 2).
+        to_012 (str): For instance, 012 for (0, 1, 2).
+        to_123 (str): For instance, 123 for (0, 1, 2).
     '''
-    def __new__(cls,
-                component: str):
-        self = super().__new__(cls, component)
-        return self
+    def __new__ (cls, *component):
+        return super().__new__(cls, component)
     @property
     def to_xyz(self)-> str:
         '''
-        For instance, 'zxy' for (2, 0, 1).
+        For instance, xyz for (0, 1, 2).
         '''
         # ASCII code 120 = x, 121 = y, 122 = z.
         return ''.join(chr(120 + arg)
-                       for arg in self.to_tuple)
+                       for arg in self)
     @property
-    def to_tuple(self)-> tuple[int]:
+    def to_012(self)-> str:
         '''
-        For instance, (2, 0, 1).
+        For instance, 012 for (0, 1, 2).
         '''
-        return tuple(int(value)
-                     for value in list(self))
-    @classmethod
-    def from_tuple(cls,
-                   *args: int):
+        return ''.join(str(arg)
+                       for arg in self)
+    @property
+    def to_123(self)-> str:
         '''
-        Classmethod from tuple[int].
+        For instance, 123 for (0, 1, 2).
         '''
-        return cls(component = ''.join(str(arg)
-                                       for arg in args))
+        return ''.join(str(arg + 1)
+                       for arg in self)
 
 class PhysicalQuantity:
     '''

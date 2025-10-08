@@ -271,7 +271,8 @@ def postw90_(mater: str,
     efermi = espresso.get_efermi(qedir = materdir)
     win = wannier90.Win.from_file(wanndir = materdir, seedname = seedname)
     win.append_spin_hall(berry = True, gyrotropic = True,
-                         efermi = efermi, fermi_energy_range = fermi_energy_range, kmesh = kmesh, component = component)
+                         efermi = efermi, fermi_energy_range = fermi_energy_range, kmesh = kmesh,
+                         component = common.Component(*component))
     # Write wannier90.win.
     win.write_file(wanndir = materdir, seedname = seedname)
     jobscript = postw90.get_jobscript(seedname = seedname, queue_name = queue_name, num_procs = num_procs, pe_name = pe_name)

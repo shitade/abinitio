@@ -314,7 +314,7 @@ class GyrotropicDat:
         # Subtract pristine Fermi energy.
         fermi_energies = [fermi_energy - efermi
                           for fermi_energy in self.fermi_energies]
-        weighted_values = [self.values[component.to_tuple] * weight
+        weighted_values = [self.values[component] * weight
                            for (component, weight) in weights.items()]
         averages = np.average(a = weighted_values, axis = 0)
         errors = np.amax(a = np.abs(weighted_values - averages), axis = 0)

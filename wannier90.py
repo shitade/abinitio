@@ -934,10 +934,9 @@ class Berry:
         if len(berry_kmesh) == 1:
             berry_kmesh = berry_kmesh * 3
         berry_task = Berry_Task('shc')
-        to_tuple = component.to_tuple
         # 0-based index to 1-based index.
         return cls(berry = berry, berry_task = berry_task, berry_kmesh = berry_kmesh, shc_method = shc_method,
-                   shc_gamma = to_tuple[0] + 1, shc_alpha = to_tuple[1] + 1, shc_beta = to_tuple[2] + 1)
+                   shc_gamma = component[0] + 1, shc_alpha = component[1] + 1, shc_beta = component[2] + 1)
 
 class Gyrotropic:
     '''
@@ -1198,9 +1197,6 @@ class Win:
             component (common.Component): Of spin Hall conductivity.
             fermi_energy_step (float, optional): Increment of Fermi energy [eV]. Defaults to 0.05.
         '''
-        # Translate component to Component object if str.
-        if isinstance(component, str):
-            component = common.Component(component = component)
         self.plot.add_param('fermi_energy_min', fermi_energy_range[0] + efermi)
         self.plot.add_param('fermi_energy_max', fermi_energy_range[1] + efermi)
         self.plot.add_param('fermi_energy_step', fermi_energy_step)

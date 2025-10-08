@@ -292,7 +292,8 @@ def postw90_(mater: str,
     efermi = vasp.get_efermi(vaspdir = materdir / 'scf')
     win = wannier90.Win.from_file(wanndir = wanndir, seedname = seedname)
     win.append_spin_hall(berry = True, gyrotropic = True,
-                         efermi = efermi, fermi_energy_range = fermi_energy_range, kmesh = kmesh, component = component)
+                         efermi = efermi, fermi_energy_range = fermi_energy_range, kmesh = kmesh,
+                         component = common.Component(*component))
     # Write wannier90.win.
     win.write_file(wanndir = wanndir, seedname = seedname)
     # Write wannier90.spn if not exist.
