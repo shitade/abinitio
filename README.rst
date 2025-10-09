@@ -2,16 +2,13 @@
 abinitio
 =========
 
-Code for nearly automated first-principles calculations
+Code for *ab initio* calculations
 ----------------------------------------------------------
-This code is to carry out VASP_, Quantum_Espresso_, and Wannier90_ nearly automatically.
-
-The code is hosted on GitHub_.
+This code is to deal with input/output files for VASP_, `Quantum Espresso`_, and Wannier90_.
 
 .. _VASP: https://www.vasp.at/
-.. _Quantum_Espresso: https://www.quantum-espresso.org/
+.. _Quantum Espresso: https://www.quantum-espresso.org/
 .. _Wannier90: https://wannier.org/
-.. _GitHub: https://github.com/shitade/abinitio/
 
 How to use
 ++++++++++
@@ -19,7 +16,7 @@ How to use
 
 #. Prepare setting.yaml for your own environment.
 
-#. Execute automatic.write_cif.py.
+#. Execute automatic/write_cif.py.
 
 #. Prepare a yaml file for calculations. See automatic/Pt(W).yaml.
 
@@ -30,6 +27,6 @@ How to use
 Author
 ++++++
 
-* `Atsuo Shitade`_ (University of Osaka, JP)
+`Atsuo Shitade`_ (University of Osaka, JP)
 
 .. _Atsuo Shitade: https://sites.google.com/view/shitade/
